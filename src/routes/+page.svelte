@@ -62,7 +62,7 @@
 />
 
 <div>
-	SHOULD BE: {counter / 3.125 + ` cm`}
+	[SHOULD BE: {counter / 3.125 + ` cm`}]
 </div>
 
 <div>
@@ -109,3 +109,9 @@
 		<p>Current curve length {currentCurveLength} in</p>
 	{/if}
 </div>
+
+<style>
+	form {
+		border: 1px solid #000;
+	}
+</style>
