@@ -3,6 +3,7 @@
   let referenceLength = 0
   let stepValue = 0
   let currentCurveLength = 0
+  let calibrated = false
     
   const units = {
     inch: 'inch',
@@ -20,17 +21,39 @@
 	};
 
 	const reset = (e: MouseEvent) => {
-    if (e.altKey) counter = 0;
+    if (e.altKey) {
+      counter = 0;
+      currentCurveLength = 0;
+      alert('Reset')
+    }
 		console.log(counter);
 	};
 
   const calibrate = () => {
-    stepValue = referenceLength / counter
+    if(measureUnit === units.centimeter) {
+      stepValue = referenceLength / counter
+    } else if (measureUnit === units.inch) {
+      stepValue = (referenceLength * 2.54) / counter
+    }
+    counter = 0
+    calibrated = true
+  }
+
+  const resetCaliber = () => {
+    counter = 0
+    calibrated = false
+    referenceLength = 0
+    stepValue = 0
+    currentCurveLength = 0
   }
 
   const calculateLength = () => {
-    // value in mm:
-    currentCurveLength = counter / stepValue
+    if(measureUnit === units.centimeter) {
+      currentCurveLength = counter * stepValue
+    } else if (measureUnit === units.inch) {
+      currentCurveLength = (counter * stepValue) / 2.54
+    }
+    
   }
 </script>
 
@@ -50,23 +73,33 @@
     All mouse manipulations must be done while the cursor is whithing the bounds of the app page.</p>
   <form on:submit|preventDefault={calibrate} on:click|stopPropagation>
     <input type="number" step=".01" bind:value={referenceLength} on:change={() => {console.log(referenceLength)}} min="0"/>
+    <select
+    bind:value={measureUnit}
+    
+    >
+      {#each Object.values(units) as unit}
+        <option value={unit}>
+          {unit}
+        </option>
+      {/each}
+    </select>
     <button type="submit">Calibrate</button>
+    <p>Status: {calibrated ? "Calibrated" : "Not calibrated"}</p>
+    <button type="button" on:click={resetCaliber}>Reset caliber</button>
   </form>
+  <p>Wheel steps: {counter}</p>
 </div>
 
-<select
-bind:value={measureUnit}
->
-  {#each Object.values(units) as unit}
-    <option value={unit}>
-      {unit}
-    </option>
-  {/each}
-</select>
 
-<p>stepValue {stepValue}</p>
+
+<p>Wheel step value: {stepValue} mm</p>
 
 
 <div>
-  <p>Current curve length {currentCurveLength} mm</p>
+  {#if measureUnit === units.centimeter}
+    <p>Current curve length {currentCurveLength} cm</p>
+  {/if}
+  {#if measureUnit === units.inch}
+    <p>Current curve length {currentCurveLength} in</p>
+  {/if}
 </div>
