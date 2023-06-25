@@ -85,7 +85,7 @@
 			}}
 			min="0"
 		/>
-		<select bind:value={measureUnit}>
+		<select bind:value={measureUnit} on:change={calculateLength}>
 			{#each Object.values(units) as unit}
 				<option value={unit}>
 					{unit}
