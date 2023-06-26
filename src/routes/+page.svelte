@@ -90,7 +90,10 @@
 	};
 </script>
 
-<svelte:window on:wheel|nonpassive|preventDefault={handleWheel} />
+<svelte:window
+	on:wheel|nonpassive|preventDefault={handleWheel}
+	on:click|nonpassive|preventDefault={reset}
+/>
 
 <div>
 	[SHOULD BE: {counter / 3.125 + ` cm`}]
@@ -125,10 +128,10 @@
 
 <div class="result">
 	{#if measureUnit === units.centimeter}
-		<p>Current curve length {currentCurveLength} cm</p>
+		<p>Current curve length {currentCurveLength.toFixed(2)} cm</p>
 	{/if}
 	{#if measureUnit === units.inch}
-		<p>Current curve length {currentCurveLength} in</p>
+		<p>Current curve length {currentCurveLength.toFixed(2)} in</p>
 	{/if}
 </div>
 
