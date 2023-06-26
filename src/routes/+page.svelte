@@ -118,7 +118,7 @@
 	<div class="history box">
 		<strong>Recent results</strong>
 		{#each history as entry, idx}
-			<p>{idx}: {entry}</p>
+			<p>{idx + 1}: {entry}</p>
 		{/each}
 		<button on:click={clearHistory}>Clear history</button>
 	</div>
