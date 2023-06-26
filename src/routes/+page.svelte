@@ -90,10 +90,7 @@
 	};
 </script>
 
-<svelte:window
-	on:wheel|nonpassive|preventDefault={handleWheel}
-	on:click|nonpassive|preventDefault={reset}
-/>
+<svelte:window on:wheel|nonpassive|preventDefault={handleWheel} />
 
 <div>
 	[SHOULD BE: {counter / 3.125 + ` cm`}]
