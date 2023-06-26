@@ -21,6 +21,7 @@
 		if (localStorage.getItem('stepValue')) {
 			if (!Number.isNaN(Number.parseFloat(localStorage.getItem('stepValue')!))) {
 				stepValue = Number.parseFloat(localStorage.getItem('stepValue')!);
+				calibrated = true;
 			}
 		}
 
