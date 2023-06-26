@@ -79,6 +79,15 @@
 		history = [];
 		localStorage.removeItem('history');
 	};
+
+	const deleteHistoryItem = (idx: Number) => {
+		history = history.filter((el, i) => {
+			if (i !== idx) {
+				return el;
+			}
+		});
+		localStorage.setItem('history', JSON.stringify(history));
+	};
 </script>
 
 <svelte:window
@@ -130,7 +139,10 @@
 	<div class="history box">
 		<strong>Recent results</strong>
 		{#each history as entry, idx}
-			<p>{idx + 1}: {entry}</p>
+			<div class="historyItem">
+				<p>{idx + 1}: {entry}</p>
+				<button on:click={() => deleteHistoryItem(idx)}>x</button>
+			</div>
 		{/each}
 		<button on:click={clearHistory}>Clear history</button>
 	</div>
@@ -140,5 +152,9 @@
 	.box {
 		border: 1px solid #000;
 		padding: 5px;
+	}
+
+	.historyItem > * {
+		display: inline-block;
 	}
 </style>
