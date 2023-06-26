@@ -81,15 +81,7 @@
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<form class="box" on:submit|preventDefault={calibrate} on:click|stopPropagation>
-		<input
-			type="number"
-			step=".01"
-			bind:value={referenceLength}
-			on:change={() => {
-				console.log(referenceLength);
-			}}
-			min="0"
-		/>
+		<input type="number" step=".01" bind:value={referenceLength} min="0" />
 		<select bind:value={measureUnit} on:change={calculateLength}>
 			{#each Object.values(units) as unit}
 				<option value={unit}>
