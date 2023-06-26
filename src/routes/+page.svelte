@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	let counter = 0;
 	let referenceLength = 0;
 	let stepValue = 0;
@@ -13,8 +15,15 @@
 	type Units = (typeof units)[keyof typeof units];
 
 	let measureUnit: Units = units.centimeter;
-
 	let history: String[] = [];
+
+	onMount(() => {
+		if (localStorage.getItem('stepValue')) {
+			if (!Number.isNaN(Number.parseFloat(localStorage.getItem('stepValue')!))) {
+				stepValue = Number.parseFloat(localStorage.getItem('stepValue')!);
+			}
+		}
+	});
 
 	const handleWheel = (e: WheelEvent) => {
 		counter += Math.sign(e.deltaY);
@@ -38,6 +47,9 @@
 		}
 		counter = 0;
 		calibrated = true;
+		if (!Number.isNaN(stepValue)) {
+			localStorage.setItem('stepValue', stepValue.toString());
+		}
 	};
 
 	const resetCaliber = () => {
@@ -46,6 +58,7 @@
 		referenceLength = 0;
 		stepValue = 0;
 		currentCurveLength = 0;
+		localStorage.removeItem('stepValue');
 	};
 
 	const calculateLength = () => {
