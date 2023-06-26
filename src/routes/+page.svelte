@@ -6,27 +6,28 @@
 	let calibrated = false;
 
 	const units = {
-		inch: 'inch',
-		centimeter: 'centimeter'
+		inch: 'in',
+		centimeter: 'cm'
 	} as const;
 
 	type Units = (typeof units)[keyof typeof units];
 
 	let measureUnit: Units = units.centimeter;
 
+	let history: String[] = [];
+
 	const handleWheel = (e: WheelEvent) => {
 		counter += Math.sign(e.deltaY);
 		calculateLength();
-		console.log(counter);
 	};
 
 	const reset = (e: MouseEvent) => {
 		if (e.altKey) {
+			history = [...history, `${currentCurveLength} ${measureUnit}`];
 			counter = 0;
 			currentCurveLength = 0;
 			alert('Reset');
 		}
-		console.log(counter);
 	};
 
 	const calibrate = () => {
@@ -54,6 +55,10 @@
 			currentCurveLength = (counter * stepValue) / 2.54;
 		}
 	};
+
+	const clearHistory = () => {
+		history = [];
+	};
 </script>
 
 <svelte:window
@@ -75,7 +80,7 @@
 	</p>
 	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<form on:submit|preventDefault={calibrate} on:click|stopPropagation>
+	<form class="box" on:submit|preventDefault={calibrate} on:click|stopPropagation>
 		<input
 			type="number"
 			step=".01"
@@ -97,11 +102,10 @@
 		<button type="button" on:click={resetCaliber}>Reset caliber</button>
 	</form>
 	<p>Wheel steps: {counter}</p>
+	<p>Wheel step value: {stepValue} mm</p>
 </div>
 
-<p>Wheel step value: {stepValue} mm</p>
-
-<div>
+<div class="result">
 	{#if measureUnit === units.centimeter}
 		<p>Current curve length {currentCurveLength} cm</p>
 	{/if}
@@ -110,8 +114,19 @@
 	{/if}
 </div>
 
+{#if history.length}
+	<div class="history box">
+		<strong>Recent results</strong>
+		{#each history as entry, idx}
+			<p>{idx}: {entry}</p>
+		{/each}
+		<button on:click={clearHistory}>Clear history</button>
+	</div>
+{/if}
+
 <style>
-	form {
+	.box {
 		border: 1px solid #000;
+		padding: 5px;
 	}
 </style>
