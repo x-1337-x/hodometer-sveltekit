@@ -23,6 +23,10 @@
 				stepValue = Number.parseFloat(localStorage.getItem('stepValue')!);
 			}
 		}
+
+		if (localStorage.getItem('history')) {
+			history = JSON.parse(localStorage.getItem('history')!);
+		}
 	});
 
 	const handleWheel = (e: WheelEvent) => {
@@ -33,6 +37,7 @@
 	const reset = (e: MouseEvent) => {
 		if (e.altKey) {
 			history = [...history, `${currentCurveLength} ${measureUnit}`];
+			localStorage.setItem('history', JSON.stringify(history));
 			counter = 0;
 			currentCurveLength = 0;
 			alert('Reset');
@@ -71,6 +76,7 @@
 
 	const clearHistory = () => {
 		history = [];
+		localStorage.removeItem('history');
 	};
 </script>
 
