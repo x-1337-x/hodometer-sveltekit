@@ -37,7 +37,7 @@
 
 	const reset = (e: MouseEvent) => {
 		if (e.altKey) {
-			history = [...history, `${currentCurveLength} ${measureUnit}`];
+			history = [...history, `${currentCurveLength.toFixed(2)} ${measureUnit}`];
 			localStorage.setItem('history', JSON.stringify(history));
 			counter = 0;
 			currentCurveLength = 0;
